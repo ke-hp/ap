@@ -1,26 +1,38 @@
 const child_process = require("child_process");
 require('dotenv').config();
-(() => {
-  for (let i = 0; i < process.env.FAKE_AP_AMOUNT; i++) {
-    let workerProcess = child_process.spawn("node", ["fakeAp", i], {
-      stdio: [null, null, null, "ipc"]
-    });
+let i = 1;
+(run = () => {
+	let workerProcess = child_process.spawn("node", [
+		"fakeAp", i,
+	], {
+		stdio: [
+			null, null, null, "ipc",
+		],
+	});
 
-    workerProcess.stdout.on("data", function(data) {
-      console.log("processMessege: " + data);
-    });
+	workerProcess.stdout.on("data", data => {
+		console.log(`processMessege: ${ data}`);
+	});
 
-    workerProcess.on("message", m => {
-      process.send(workerProcess.pid);
-    });
-    workerProcess.send(workerProcess.pid);
+	workerProcess.on("message", m => {
+	});
 
-    workerProcess.stderr.on("err", function(err) {
-      console.log("processMessegeerr: " + err);
-    });
+	workerProcess.stderr.on("err", err => {
+		console.log(`processMessegeerr: ${ err}`);
+	});
 
-    workerProcess.on("close", function(code) {
-      console.log("子进程已退出，退出码 " + code);
-    });
-  }
-})();
+	workerProcess.on("close", code => {
+		console.log(`子进程已退出，退出码 ${ code}`);
+	});
+
+	if ( i < process.env.FAKE_AP_AMOUNT ) {
+		if ( i % process.env.FAKE_AP_EACH_AMOUNT === 0 ) {
+			setTimeout(()=>{
+				run(++i);
+			}, process.env.FAKE_AP_EACH_TIME * 1000)
+		} else {
+			run(++i);
+		}
+	}
+
+})(i);

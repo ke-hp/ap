@@ -18,5 +18,8 @@ RUN npm install
 # our app's code don't bust Docker's cache)
 ADD . /app
 
+# Run code detecting apparatus 
+RUN npm run lint
+
 # Start the fake ap app
 CMD ["node","app.js"]

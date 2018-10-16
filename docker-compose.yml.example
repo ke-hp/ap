@@ -1,0 +1,8 @@
+ap:
+  image: "registry.cn-shenzhen.aliyuncs.com/nradio/fake-ap:7"
+  environment:
+    - FAKE_AP_PREFIX=FC83C60F
+    - FAKE_AP_AMOUNT=200
+    - FAKE_AP_HOST=172.16.0.3
+    - FAKE_AP_EACH_AMOUNT=10
+    - FAKE_AP_EACH_TIME=10

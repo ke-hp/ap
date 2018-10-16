@@ -5,7 +5,11 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "commit": "commit-wizard",
+    "lint": "./node_modules/.bin/eslint app.js fakeAp.js --quiet",
+    "lint-fix": "./node_modules/.bin/eslint app.js fakeAp.js --quiet --fix",
+    "js-beautify": "node --harmony --use_strict ./bin/beatufyjs.js app.js fakeAp.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +20,27 @@
     "mqtt": "^2.18.8",
     "npm": "^6.4.1",
     "update": "^0.7.4"
+  },
+  "release": {
+    "analyzeCommits": "simple-commit-message"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^5.4.0",
+    "js-beautify": "^1.7.5",
+    "pre-git": "^3.17.1"
+  },
+  "config": {
+    "pre-git": {
+      "commit-msg": "",
+      "pre-commit": [
+        "npm run lint-fix",
+        "npm run js-beautify"
+      ],
+      "pre-push": [],
+      "post-commit": [],
+      "post-checkout": [],
+      "post-merge": []
+    }
   }
 }
